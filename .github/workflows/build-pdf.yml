@@ -38,6 +38,9 @@ jobs:
             texlive-bibtex-extra \
             texlive-fonts-recommended
       
+      - name: Create output directory
+        run: mkdir -p output
+      
       - name: Build PDF
         run: npm run build
       

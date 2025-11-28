@@ -12,8 +12,6 @@
 *.fdb_latexmk
 *.synctex.gz
 
-# Output directory
-output/
 
 # Node.js
 node_modules/
