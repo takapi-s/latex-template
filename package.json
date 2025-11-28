@@ -5,7 +5,7 @@
     "author": "",
     "scripts": {
         "build:tex": "platex -kanji=utf8 -output-directory=output main",
-        "build:bib": "cd output && BIBINPUTS=..: pbibtex -kanji=utf8 main && cd ..",
+        "build:bib": "cd output && (BIBINPUTS=..: pbibtex -kanji=utf8 main || true) && cd ..",
         "build:dvi": "cd output && dvipdfmx main && cd ..",
         "build": "npm run clean && npm run build:tex && npm run build:bib && npm run build:tex && npm run build:tex && npm run build:dvi",
         "build-dev": "npm run build:tex && npm run build:dvi",
