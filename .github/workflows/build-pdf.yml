@@ -28,17 +28,15 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
       
-      - name: Setup TeX Live
-        uses: aminya/setup-texlive-action@v1
-        with:
-          # 日本語LaTeXに必要なパッケージを含む最小構成
-          scheme: medium
-          # 日本語対応のための追加パッケージ
-          packages: |
-            collection-langjapanese
-            platex
-            pbibtex
-            dvipdfmx
+      - name: Setup TeX Live (Japanese)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-lang-japanese \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-bibtex-extra \
+            texlive-fonts-recommended
       
       - name: Build PDF
         run: npm run build
