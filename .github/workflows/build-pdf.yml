@@ -1,0 +1,61 @@
+name: Build PDF
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # 手動実行も可能にする
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install npm dependencies
+        run: npm ci
+      
+      - name: Setup TeX Live
+        uses: aminya/setup-texlive-action@v1
+        with:
+          # 日本語LaTeXに必要なパッケージを含む最小構成
+          scheme: medium
+          # 日本語対応のための追加パッケージ
+          packages: |
+            collection-langjapanese
+            platex
+            pbibtex
+            dvipdfmx
+      
+      - name: Build PDF
+        run: npm run build
+      
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: output/*.pdf
+          retention-days: 30
+      
+      - name: Check if PDF was generated
+        run: |
+          if [ ! -f output/*.pdf ]; then
+            echo "Error: PDF file was not generated"
+            exit 1
+          fi
+          echo "PDF generated successfully:"
+          ls -lh output/*.pdf
+
