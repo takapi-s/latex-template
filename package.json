@@ -1,0 +1,29 @@
+{
+    "name": "latex-paper-template",
+    "version": "1.0.0",
+    "description": "日本語LaTeX論文執筆用のテンプレートリポジトリ",
+    "author": "",
+    "scripts": {
+        "build:tex": "platex -kanji=utf8 -output-directory=output main",
+        "build:bib": "cd output && BIBINPUTS=..: pbibtex -kanji=utf8 main && cd ..",
+        "build:dvi": "cd output && dvipdfmx main && cd ..",
+        "build": "npm run clean && npm run build:tex && npm run build:bib && npm run build:tex && npm run build:tex && npm run build:dvi",
+        "build-dev": "npm run build:tex && npm run build:dvi",
+        "watch:tex": "chokidar '*.tex' 'sections/*.tex' -c 'npm run build-dev'",
+        "watch:bib": "chokidar '*.bib' -c 'npm run build-dev'",
+        "watch": "npm-run-all --parallel watch:tex watch:bib",
+        "clean": "rm -rf output/*.aux output/*.bbl output/*.blg output/*.dvi output/*.log output/*.pdf .DS_Store 2>/dev/null || true"
+    },
+    "devDependencies": {
+        "chokidar-cli": "^1.2.0",
+        "npm-run-all": "^4.1.5"
+    },
+    "keywords": [
+        "latex",
+        "template",
+        "japanese",
+        "paper",
+        "academic"
+    ],
+    "license": "MIT"
+}
